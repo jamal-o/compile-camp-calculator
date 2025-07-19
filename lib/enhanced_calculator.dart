@@ -24,13 +24,13 @@ class _EnhancedCalculatorState extends State<EnhancedCalculator> {
       CalculatorButton(text: "M-", value: "M-", type: ButtonType.memory),
     ],
     [
-      CalculatorButton(text: "sin", value: "sin", type: ButtonType.expanded),
-      CalculatorButton(text: "cos(", value: "cos", type: ButtonType.expanded),
-      CalculatorButton(text: "tan(", value: "tan", type: ButtonType.expanded),
-      CalculatorButton(text: "log(", value: "log", type: ButtonType.expanded),
+      CalculatorButton(text: "sin()", value: "sin", type: ButtonType.expanded),
+      CalculatorButton(text: "cos()", value: "cos", type: ButtonType.expanded),
+      CalculatorButton(text: "tan()", value: "tan", type: ButtonType.expanded),
+      CalculatorButton(text: "log()", value: "log", type: ButtonType.expanded),
     ],
     [
-      CalculatorButton(text: "ln", value: "ln", type: ButtonType.expanded),
+      CalculatorButton(text: "ln()", value: "ln", type: ButtonType.expanded),
       CalculatorButton(text: "x^2", value: "x^2", type: ButtonType.expanded),
       CalculatorButton(text: "x^n", value: "x^n", type: ButtonType.expanded),
       CalculatorButton(text: "1/x", value: "1/x", type: ButtonType.expanded),
