@@ -196,7 +196,7 @@ class CalculatorLogic {
   }
 
   static CalculatorState _handleClear(CalculatorState state) {
-    return  CalculatorState(
+    return CalculatorState(
       display: "0",
       memory: 0, // Preserve memory for MC vs C distinction
       rad: state.rad,
@@ -312,7 +312,7 @@ class CalculatorLogic {
     if (isRad) {
       return rad;
     }
-    return 180 / math.pi;
+    return rad * math.pi / 180;
   }
 
   static String _formatDisplay(double value) {
