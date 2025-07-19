@@ -47,6 +47,15 @@ class CalculatorLogic {
         return _handleMemoryAdd(state);
       case "M-":
         return _handleMemorySubtract(state);
+      case "sin":
+      case "cos":
+      case "tan":
+      case "log":
+      case "ln":
+      case "x^2":
+      case "x^n":
+      case "1/x":
+        return _handleExpanded(state, input);
       default:
         return state;
     }
@@ -92,6 +101,38 @@ class CalculatorLogic {
     );
   }
 
+  static CalculatorState _handleExpanded(
+    CalculatorState state,
+    String operation,
+  ) {
+    // if (state.currentValue != null) {
+    //   // Perform pending calculation first
+    //   final result = _calculate(
+    //     state.previousValue ?? 1,
+    //     state.currentValue ?? 0,
+    //     "",
+    //   );
+    //   if (result == null) {
+    //     return state.copyWith(display: errorMessage);
+    //   }
+
+    //   return state.copyWith(
+    //     display: _formatDisplay(result),
+    //     currentValue: result,
+    //     previousValue: result,
+    //     operation: operation,
+    //     shouldResetDisplay: true,
+    //   );
+    // }
+
+    return state.copyWith(
+      previousValue: state.currentValue ?? 1,
+      display: state.display,
+      operation: operation,
+      shouldResetDisplay: true,
+    );
+  }
+
   static CalculatorState _handleOperation(
     CalculatorState state,
     String operation,
@@ -100,11 +141,7 @@ class CalculatorLogic {
         state.previousValue != null &&
         !state.shouldResetDisplay) {
       // Perform pending calculation first
-      final result = _calculate(
-        state.previousValue!,
-        state.currentValue ?? 0,
-        state.operation!,
-      );
+      final result = _calculate(state);
       if (result == null) {
         return state.copyWith(display: errorMessage);
       }
@@ -132,11 +169,7 @@ class CalculatorLogic {
       return state;
     }
 
-    final result = _calculate(
-      state.previousValue!,
-      state.currentValue!,
-      state.operation!,
-    );
+    final result = _calculate(state);
     if (result == null) {
       return state.copyWith(display: errorMessage);
     }
@@ -163,9 +196,10 @@ class CalculatorLogic {
   }
 
   static CalculatorState _handleClear(CalculatorState state) {
-    return const CalculatorState(
+    return  CalculatorState(
       display: "0",
       memory: 0, // Preserve memory for MC vs C distinction
+      rad: state.rad,
     );
   }
 
@@ -235,8 +269,11 @@ class CalculatorLogic {
     return state.copyWith(memory: state.memory - current);
   }
 
-  static double? _calculate(double a, double b, String operation) {
+  static double? _calculate(CalculatorState state) {
     try {
+      final operation = state.operation;
+      final a = state.previousValue!;
+      final b = state.currentValue!;
       switch (operation) {
         case "+":
           return a + b;
@@ -247,12 +284,35 @@ class CalculatorLogic {
         case "÷":
           if (b == 0) return null; // Division by zero
           return a / b;
+        case "sin":
+          return a * math.sin(_degreeConversion(state.rad, b));
+        case "cos":
+          return a * math.cos(_degreeConversion(state.rad, b));
+        case "tan":
+          return a * math.tan(_degreeConversion(state.rad, b));
+        case "log":
+          return a * math.log(_degreeConversion(state.rad, b));
+        case "ln":
+          return a * math.log(_degreeConversion(state.rad, b));
+        case "x^2":
+          return math.pow(a, 2).toDouble();
+        case "x^n":
+          return math.pow(a, b).toDouble();
+        case "1/x":
+          return 1 / b;
         default:
           return null;
       }
     } catch (e) {
       return null;
     }
+  }
+
+  static double _degreeConversion(bool isRad, double rad) {
+    if (isRad) {
+      return rad;
+    }
+    return 180 / math.pi;
   }
 
   static String _formatDisplay(double value) {

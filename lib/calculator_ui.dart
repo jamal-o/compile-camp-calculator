@@ -264,6 +264,8 @@ class _CalculatorAppState extends State<CalculatorApp> {
         return Colors.blue[700]!;
       case ButtonType.utility:
         return Colors.grey[600]!;
+      case ButtonType.expanded:
+        return Colors.green;
     }
   }
 

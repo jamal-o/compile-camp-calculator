@@ -7,9 +7,10 @@ class CalculatorState {
   final double? previousValue;
   final String? operation;
   final bool shouldResetDisplay;
+  final bool rad;
   final double memory;
   final List<CalculationHistory> history;
-  
+
   const CalculatorState({
     this.display = "0",
     this.currentValue,
@@ -18,8 +19,9 @@ class CalculatorState {
     this.shouldResetDisplay = false,
     this.memory = 0,
     this.history = const [],
+    this.rad = true,
   });
-  
+
   CalculatorState copyWith({
     String? display,
     double? currentValue,
@@ -28,6 +30,7 @@ class CalculatorState {
     bool? shouldResetDisplay,
     double? memory,
     List<CalculationHistory>? history,
+    bool? rad,
   }) {
     return CalculatorState(
       display: display ?? this.display,
@@ -37,6 +40,7 @@ class CalculatorState {
       shouldResetDisplay: shouldResetDisplay ?? this.shouldResetDisplay,
       memory: memory ?? this.memory,
       history: history ?? this.history,
+      rad: rad ?? this.rad,
     );
   }
 }
@@ -45,7 +49,7 @@ class CalculationHistory {
   final String expression;
   final String result;
   final DateTime timestamp;
-  
+
   CalculationHistory({
     required this.expression,
     required this.result,
@@ -53,13 +57,7 @@ class CalculationHistory {
   });
 }
 
-enum ButtonType {
-  number,
-  operation,
-  function,
-  memory,
-  utility,
-}
+enum ButtonType { number, operation, function, memory, utility, expanded }
 
 class CalculatorButton {
   final String text;
@@ -67,7 +65,7 @@ class CalculatorButton {
   final ButtonType type;
   final Color? color;
   final Color? textColor;
-  
+
   const CalculatorButton({
     required this.text,
     required this.value,
